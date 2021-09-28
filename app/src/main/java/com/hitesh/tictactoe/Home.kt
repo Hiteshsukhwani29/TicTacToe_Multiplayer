@@ -18,6 +18,7 @@ class Home : Fragment(), View.OnClickListener {
     var player = true;
     var count = 0;
 
+
     var b = Array(3){IntArray(3)}
 
     lateinit var board : Array<Array<Button>>
@@ -38,7 +39,7 @@ class Home : Fragment(), View.OnClickListener {
         val button7 = v.findViewById<Button>(R.id.button7)
         val button8 = v.findViewById<Button>(R.id.button8)
         val reset = v.findViewById<Button>(R.id.rstbtn)
-        val status = v.findViewById<TextView>(R.id.status)
+
 
         board = arrayOf(
                 arrayOf(button,button1,button2),
@@ -65,13 +66,17 @@ class Home : Fragment(), View.OnClickListener {
 
     private fun IntializeBoardStatus() {
 
-        status.setText("X's Turn")
 
         for(i in 0..2){
             for(j in 0..2){
-                b[0][0] = -1
-                board[i][j].isEnabled = true
-                board[i][j].text = ""
+                b[i][j] = -1
+            }
+        }
+
+        for (i in board){
+            for (butto in i){
+                butto.isEnabled=true
+                butto.setText("")
             }
         }
 
@@ -119,6 +124,44 @@ class Home : Fragment(), View.OnClickListener {
 
         if(count==9)
             updatedisplay("Match Draw")
+
+        checkwinner()
+
+    }
+
+    private fun checkwinner() {
+
+        for(i in 0..2){
+            if(b[i][0]==b[i][1] && b[i][0]==b[i][2]){
+                if(b[i][0]==1)
+                    status.setText("X Wins")
+                else if(b[i][0]==0)
+                    status.setText("O wins")
+            }
+
+            if(b[0][i]==b[1][i] && b[0][i]==b[2][i]){
+                if(b[0][i]==1)
+                    status.setText("X Wins")
+                else if(b[0][i]==0)
+                    status.setText("O wins")
+            }
+
+        }
+
+        if(b[0][0]==b[1][1] && b[0][0]==b[2][2]){
+            if(b[0][0]==1)
+                status.setText("X Wins")
+            else if(b[0][0]==0)
+                status.setText("O wins")
+        }
+
+        if(b[0][2]==b[1][1] && b[0][2]==b[2][0]){
+            if(b[0][2]==1)
+                status.setText("X Wins")
+            else if(b[0][2]==0)
+                status.setText("O wins")
+        }
+
 
     }
 
