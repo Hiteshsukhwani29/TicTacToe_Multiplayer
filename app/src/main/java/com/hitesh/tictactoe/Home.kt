@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class Home : Fragment(), View.OnClickListener {
@@ -37,6 +38,7 @@ class Home : Fragment(), View.OnClickListener {
         val button7 = v.findViewById<Button>(R.id.button7)
         val button8 = v.findViewById<Button>(R.id.button8)
         val reset = v.findViewById<Button>(R.id.rstbtn)
+        val status = v.findViewById<TextView>(R.id.status)
 
         board = arrayOf(
                 arrayOf(button,button1,button2),
@@ -63,12 +65,13 @@ class Home : Fragment(), View.OnClickListener {
 
     private fun IntializeBoardStatus() {
 
+        status.setText("X's Turn")
 
         for(i in 0..2){
             for(j in 0..2){
                 b[0][0] = -1
-                board[0][0].isEnabled = true
-                board[0][0].text = ""
+                board[i][j].isEnabled = true
+                board[i][j].text = ""
             }
         }
 
@@ -106,6 +109,22 @@ class Home : Fragment(), View.OnClickListener {
             }
 
         }
+
+        player = !player
+        count++
+        if(player)
+            updatedisplay("X's Turn")
+        else
+            updatedisplay("O's Turn")
+
+        if(count==9)
+            updatedisplay("Match Draw")
+
+    }
+
+    private fun updatedisplay(s: String) {
+
+        status.setText(s)
 
     }
 
