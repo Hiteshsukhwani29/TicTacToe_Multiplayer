@@ -3,20 +3,23 @@ package com.hitesh.tictactoe
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Range
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.*
+
 
 class Home : Fragment(), View.OnClickListener {
 
 
     var player = true;
     var count = 0;
+    private var db: FirebaseFirestore? = null
+    var data: HashMap<String, String> = HashMap()
 
 
     var b = Array(3){IntArray(3)}
@@ -87,30 +90,39 @@ class Home : Fragment(), View.OnClickListener {
         when(v.id){
             R.id.button ->{
                 updateValue(row = 0, col =0, Player = player)
+                addDataToFirestore(row = 0, col =0, Player = player)
             }
             R.id.button1 ->{
                 updateValue(row = 0, col =1, Player = player)
+                addDataToFirestore(row = 0, col =1, Player = player)
             }
             R.id.button2 ->{
                 updateValue(row = 0, col =2, Player = player)
+                addDataToFirestore(row = 0, col =2, Player = player)
             }
             R.id.button3 ->{
                 updateValue(row = 1, col =0, Player = player)
+                addDataToFirestore(row = 1, col =0, Player = player)
             }
             R.id.button4 ->{
                 updateValue(row = 1, col =1, Player = player)
+                addDataToFirestore(row = 1, col =1, Player = player)
             }
             R.id.button5 ->{
                 updateValue(row = 1, col =2, Player = player)
+                addDataToFirestore(row = 1, col =2, Player = player)
             }
             R.id.button6 ->{
                 updateValue(row = 2, col =0, Player = player)
+                addDataToFirestore(row = 2, col =0, Player = player)
             }
             R.id.button7 ->{
                 updateValue(row = 2, col =1, Player = player)
+                addDataToFirestore(row = 2, col =1, Player = player)
             }
             R.id.button8 ->{
                 updateValue(row = 2, col =2, Player = player)
+                addDataToFirestore(row = 2, col =2, Player = player)
             }
 
         }
@@ -173,7 +185,7 @@ class Home : Fragment(), View.OnClickListener {
 
     private fun updateValue(row: Int, col: Int, Player: Boolean) {
 
-        val P = if(player) "X" else "O"
+        val P = if(player) "X" else ""
         val value = if(player) 1 else 0
         board[row][col].apply {
             isEnabled = false
@@ -183,5 +195,14 @@ class Home : Fragment(), View.OnClickListener {
 
     }
 
-
+    private fun addDataToFirestore(row: Int, col: Int, Player: Boolean) {
+        db = FirebaseFirestore.getInstance()
+        val dbCourses: DocumentReference = db!!.collection("room").document("0123")
+        val a: String = row.toString()+col.toString()
+        if(player) {
+            data[a] = player.toString()
+            Log.d("Working", "added data")
+            dbCourses.set(data)
+        }
+    }
 }
